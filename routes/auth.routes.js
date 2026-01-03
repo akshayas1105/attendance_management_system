@@ -12,10 +12,20 @@ router.post("/login", (req, res) => {
 
   // Dummy check (temporary)
   if (username === "admin" && password === "admin123") {
-    req.session.user = username;
+     req.session.user = {
+      username: "admin",
+      role: "admin",
+    };
     return res.redirect("/dashboard");
   }
 
+  if (username === "user" && password === "user123") {
+    req.session.user = {
+      username: "user",
+      role: "user",
+    };
+    return res.redirect("/dashboard");
+  }
   res.send("Invalid credentials");
 });
 
