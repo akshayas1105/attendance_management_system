@@ -20,6 +20,7 @@
   "homepage": "https://github.com/akshayas1105/attendance_management_system#readme",
   "dependencies": {
     "express": "^5.2.1",
-    "express-session": "^1.18.2"
+    "express-session": "^1.18.2",
+    "mongoose": "^9.1.1"
   }
 }

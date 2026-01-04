@@ -9,6 +9,10 @@ const isAuthenticated = require("./middleware/auth.middleware");
 const authRoutes = require("./routes/auth.routes");
 const attendanceRoutes = require("./routes/attendance.controller");
 
+//Mongodb connection
+const connectDB = require("./config/db");
+connectDB();
+
 const app = express();
 
 app.use(express.urlencoded({ extended: true }));
