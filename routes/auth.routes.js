@@ -1,5 +1,6 @@
 const express = require("express");
 const router = express.Router();
+const User = require("../models/user"); 
 
 // Show login page
 router.get("/login", (req, res) => {
@@ -7,26 +8,27 @@ router.get("/login", (req, res) => {
 });
 
 // Handle login
-router.post("/login", (req, res) => {
+router.post("/login", async(req, res) => {
   const { username, password } = req.body;
 
-  // Dummy check (temporary)
-  if (username === "admin" && password === "admin123") {
-     req.session.user = {
-      username: "admin",
-      role: "admin",
-    };
-    return res.redirect("/dashboard");
-  }
+  try {
+    const user = await User.findOne({ username, password });
 
-  if (username === "user" && password === "user123") {
+    if (!user) {
+      return res.send("Invalid credentials");
+    }
+
     req.session.user = {
-      username: "user",
-      role: "user",
+      username: user.username,
+      role: user.role,
     };
-    return res.redirect("/dashboard");
+
+    res.redirect("/dashboard");
+  } catch (err) {
+    console.error(err);
+    res.send("Something went wrong");
   }
-  res.send("Invalid credentials");
+  
 });
 
 module.exports = router;
