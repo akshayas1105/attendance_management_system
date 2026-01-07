@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Mark Attendance</title>
+  <link rel="stylesheet" href="/style.css" />
+
+</head>
+<body>
+  <h2>Mark Attendance</h2>
+  <form action="/attendance/mark" method="POST">
+    <label>Student Name:</label>
+    <input type="text" name="studentName" required /><br/><br/>
+    
+    <label>Status:</label>
+    <select name="status" required>
+      <option value="Present">Present</option>
+      <option value="Absent">Absent</option>
+    </select><br/><br/>
+
+    <button type="submit">Mark Attendance</button>
+  </form>
+  <br/>
+  <a href="/dashboard">Back to Dashboard</a>
+</body>
+</html>
