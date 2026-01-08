@@ -11,12 +11,14 @@ const attendanceRoutes = require("./routes/attendance.controller");
 
 //Mongodb connection
 const connectDB = require("./config/db");
+const isTeacher = require("./middleware/isTeacher");
 connectDB();
 
 const app = express();
 
 app.use(express.urlencoded({ extended: true }));
 app.use(express.json());
+app.use(express.static("public"));
 
 //session middleware
 app.use(
@@ -37,20 +39,22 @@ app.get("/dashboard", isAuthenticated, (req, res) => {
 
   let content = `
     <h2>Dashboard</h2>
-    <p>Welcome ${username}</p>
-    <p>Role: ${role}</p>
+    <p>Welcome <strong>${username}</strong></p>
+    <p>Role: <strong>${role}</strong></p>
+     <div style="margin-top:20px;">
   `;
 
   // Admin-only options
-  if (role === "admin") {
+  if (role === "teacher") {
     content += `
       <h3>Admin Options</h3>
-      <a href="/admin">Admin Panel</a><br/>
+       <a href="/attendance/mark-form">Mark Attendance</a><br/>
+       <a href="/attendance/view">View All Attendance</a><br/>
     `;
   }
 
   // User-only options
-  if (role === "user") {
+  if (role === "student") {
     content += `
       <h3>User Options</h3>
       <a href="/attendance/view">View My Attendance</a><br/>
@@ -60,6 +64,7 @@ app.get("/dashboard", isAuthenticated, (req, res) => {
   content += `
     <br/>
     <a href="/logout">Logout</a>
+    </div>
   `;
 
   res.send(content);
@@ -71,28 +76,6 @@ app.get("/dashboard", isAuthenticated, (req, res) => {
 app.get("/", (req, res) => {
   res.redirect("/login");
 });
-
-app.get("/admin", isAuthenticated, isAdmin, (req, res) => {
-  res.send(`
-    <h2>Admin Panel</h2>
-    <p>You have special access</p>
-
-    <h3>Attendance</h3>
-
-    <form method="POST" action="/attendance/mark">
-      <input name="studentName" placeholder="Student name" />
-      <select name="status">
-        <option value="Present">Present</option>
-        <option value="Absent">Absent</option>
-      </select>
-      <button type="submit">Mark Attendance</button>
-    </form>
-
-    <br/>
-    <a href="/dashboard">Back to Dashboard</a>
-  `);
-});
-
 
 app.get("/logout", (req, res) => {
   req.session.destroy(() => {
