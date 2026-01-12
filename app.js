@@ -37,39 +37,68 @@ app.use("/attendance", attendanceRoutes);
 app.get("/dashboard", isAuthenticated, (req, res) => {
   const { username, role } = req.session.user;
 
-  let content = `
-    <h2>Dashboard</h2>
-    <p>Welcome <strong>${username}</strong></p>
-    <p>Role: <strong>${role}</strong></p>
-     <div style="margin-top:20px;">
-  `;
+  let cards = "";
 
-  // Admin-only options
+  // Teacher dashboard
   if (role === "teacher") {
-    content += `
-      <h3>Admin Options</h3>
-       <a href="/attendance/mark-form">Mark Attendance</a><br/>
-       <a href="/attendance/view">View All Attendance</a><br/>
+    cards = `
+      <div class="card">
+        <h3>Mark Attendance</h3>
+        <p>Record student attendance</p>
+        <a href="/attendance/mark-form">Go</a>
+      </div>
+
+      <div class="card">
+        <h3>View Attendance</h3>
+        <p>View all attendance records</p>
+        <a href="/attendance/view">Go</a>
+      </div>
     `;
   }
 
-  // User-only options
+  // Student dashboard
   if (role === "student") {
-    content += `
-      <h3>User Options</h3>
-      <a href="/attendance/view">View My Attendance</a><br/>
+    cards = `
+      <div class="card student">
+        <h3>My Attendance</h3>
+        <p>View your attendance history</p>
+        <a href="/attendance/view">View</a>
+      </div>
     `;
   }
 
-  content += `
-    <br/>
-    <a href="/logout">Logout</a>
-    </div>
-  `;
+  res.send(`
+    <!DOCTYPE html>
+    <html>
+    <head>
+      <title>Dashboard</title>
+      <link rel="stylesheet" href="/style.css">
+    </head>
+    <body>
 
-  res.send(content);
+      <div class="dashboard-container">
+        <div class="dashboard-header">
+          <h2>Dashboard</h2>
+          
+          <div class="user-info">
+            User: <span>${username}</span> |
+            Role: <span>${role}</span>
+          </div>
+        </div>
+
+        <div class="cards">
+          ${cards}
+        </div>
+
+        <div class="logout">
+          <a href="/logout">Logout</a>
+        </div>
+      </div>
+
+    </body>
+    </html>
+  `);
 });
-
 
 
 

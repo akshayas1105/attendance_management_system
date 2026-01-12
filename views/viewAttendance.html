@@ -2,86 +2,80 @@
 <html>
 <head>
   <title>View Attendance</title>
-   <link rel="stylesheet" href="/style.css" />
-    <style>
-    table {
-      width: 80%;
-      border-collapse: collapse;
-      margin-top: 20px;
-    }
-    table, th, td {
-      border: 1px solid #ccc;
-    }
-    th, td {
-      padding: 10px;
-      text-align: left;
-    }
-    th {
-      background-color: #f2f2f2;
-    }
-  </style>
-  
+  <link rel="stylesheet" href="/style.css" />
 </head>
-<body>
-  <h2>View Attendance</h2>
- <label >Select a Date:</label>
-  <input type="date" id="datePicker" />
-  <button onclick="loadAttendance()">View</button>
-  <table >
-    <thead>
-      <tr>
-        <th>Student Name</th>
-        <th>Status</th>
-        <th>Date</th>
-      </tr>
-    </thead>
-    <tbody id="tableBody"></tbody>
-  </table>
 
-  <br/>
-  <a href="/dashboard">Back to Dashboard</a>
+<body>
+  <div class="attendance-page">
+    <div class="attendance-card">
+
+      <h2>View Attendance</h2>
+
+      <label>Select Date</label>
+      <input type="date" id="datePicker" />
+      <button onclick="loadAttendance()">View</button>
+
+      <table class="attendance-table">
+        <thead>
+          <tr>
+            <th>Student Name</th>
+            <th>Status</th>
+            <th>Date</th>
+          </tr>
+        </thead>
+        <tbody id="tableBody">
+          <!-- Data loads here -->
+        </tbody>
+      </table>
+
+      <a href="/dashboard" class="back-link">← Back to Dashboard</a>
+
+    </div>
+  </div>
 
   <script>
-   function loadAttendance() {
-    const date = document.getElementById("datePicker").value;
-    const url = date
-      ? `/attendance/data?date=${date}`
-      : `/attendance/data`;
+    function loadAttendance() {
+      const date = document.getElementById("datePicker").value;
 
-    fetch(url)
-      .then(res => res.json())
-      .then(data => {
-          console.log("Attendance data:", data); // DEBUG
-        const body = document.getElementById("tableBody");
-        body.innerHTML = "";
+      const url = date
+        ? `/attendance/data?date=${date}`
+        : `/attendance/data`;
 
-        if (data.length === 0) {
-          body.innerHTML = `
-            <tr>
-              <td colspan="3">No records found</td>
-            </tr>
-          `;
-          return;
-        }
+      fetch(url)
+        .then(res => res.json())
+        .then(data => {
+          const body = document.getElementById("tableBody");
+          body.innerHTML = "";
 
-        data.forEach(r => {
-          const row = document.createElement("tr");
+          if (data.length === 0) {
+            body.innerHTML = `
+              <tr>
+                <td colspan="3">No attendance records found</td>
+              </tr>
+            `;
+            return;
+          }
 
-          row.innerHTML = `
-            <td>${r.studentName}</td>
-            <td>${r.status}</td>
-            <td>${new Date(r.date).toLocaleDateString()}</td>
-          `;
+          data.forEach(r => {
+            const row = document.createElement("tr");
 
-          body.appendChild(row);
-        });
-      })
-      .catch(err => console.error(err));
-  }
+            const statusClass =
+              r.status === "Present" ? "status-present" : "status-absent";
 
-  // Load on page load
-  window.onload = loadAttendance;
-        
+            row.innerHTML = `
+              <td>${r.studentName}</td>
+              <td class="${statusClass}">${r.status}</td>
+              <td>${new Date(r.date).toLocaleDateString()}</td>
+            `;
+
+            body.appendChild(row);
+          });
+        })
+        .catch(err => console.error("Error loading attendance:", err));
+    }
+
+    // Load data on page load
+    window.onload = loadAttendance;
   </script>
 </body>
 </html>
