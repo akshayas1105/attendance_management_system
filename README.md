@@ -2,7 +2,7 @@
 ![Node.js](https://img.shields.io/badge/Node.js-18.x-339933?style=flat&logo=node.js)
 ![Express](https://img.shields.io/badge/Express-4.x-000000?style=flat&logo=express)
 ![MongoDB](https://img.shields.io/badge/MongoDB-6.x-47A248?style=flat&logo=mongodb)
-![License](https://img.shields.io/badge/license-MIT-green)
+
 
 # Attendance_Management_System
 A web-based Attendance Management System designed to simplify attendance tracking and management.  
@@ -10,7 +10,7 @@ This project is being developed in phases, starting with core system setup and b
    
 ---
 
-#Project Overview
+# Project Overview
 
 The Attendance Management System is a web application designed to allow teachers to mark and view student attendance and for students to view their own attendance records. The system uses role-based access, ensuring teachers and students have access to appropriate functionalities. The application features a modern, user-friendly interface with responsive design and real-time feedback.
 
@@ -68,13 +68,15 @@ attendance-system/<br>
 
 
 ---
+## 📋 Prerequisites
 
-## Getting Started
+Before you begin, ensure you have the following installed:
+- **Node.js** (v18.x or higher) - [Download](https://nodejs.org/)
+- **npm** (v9.x or higher) or **yarn**
+- **MongoDB** (v6.x or higher) - [Download](https://www.mongodb.com/try/download/community) or use [MongoDB Atlas](https://www.mongodb.com/cloud/atlas)
+- **Git** - [Download](https://git-scm.com/)
 
-### Prerequisites
-
-- Node.js (v18+)  
-- MongoDB (v6+) installed locally or using MongoDB Atlas  
+---
 
 ### Installation
 
@@ -83,23 +85,43 @@ attendance-system/<br>
 ```bash
 git clone <your-repo-url>
 cd attendance-system
-
+```
+---
 2. Install dependencies:
 
 ```bash
 npm install
-
+```
+---
 3.Seed initial users:
 
 ```bash
 node scripts/seedUsers.js
-
+```
+---
 4.Start the server:
 
 ```bash
 node app.js
-
+```
+---
 5.Open your browser:
 
 ```bash
 http://localhost:3000/login
+```
+---
+## Usage
+- Login as Teacher to mark and view attendance
+- Login as Student to view personal attendance records
+- Filter attendance using the date picker
+---
+## Future Enhancements
+
+- **Dashboard with summary statistics**
+- **Charts for attendance trends)**
+- **Responsive UI for mobile devices**
+- **Role-based CRUD for students**
+- **Export attendance to CSV/Excel**
+
+---
